@@ -1,5 +1,5 @@
-const express = require ("express");
-const path = require ("path");
+const express = require("express");
+const path = require("path");
 require("./connect");
 const urlRoute = require("./routes/url")
 const statusRoute = require("./routes/staticRouter");
@@ -8,7 +8,7 @@ const app = express();
 const PORT = 8001;
 
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ extended: false }));
 
 app.use("/url", urlRoute);
 app.use("/", statusRoute);
@@ -18,18 +18,18 @@ app.set("views", path.resolve("./views"));
 
 
 
-app.get('/',(req, res) => {
+app.get('/', (req, res) => {
     res.send('Welcome to the URL Shortener API');
 })
 
 
 app.get("/test", async (req, res) => {
     const allUrls = await URL.find({});
-    return res.render("home",{
+    return res.render("home", {
         urls: allUrls,
-        
-    })    
-   });
+
+    })
+});
 app.get("/url/:shortId", async (req, res) => {
     const shortId = req.params.shortId;
     const entry = await URL.findOneAndUpdate({
@@ -40,8 +40,8 @@ app.get("/url/:shortId", async (req, res) => {
                 timestamp: Date.now(),
             },
         },
-    }, );
-    
+    },);
+
     res.redirect(entry.redirectURL);
 });
 // app.get("/:shortId", async (req, res) => {
@@ -67,4 +67,4 @@ app.get("/url/:shortId", async (req, res) => {
 
 
 
-app.listen(PORT,() => console.log(`Server Started at PORT:${PORT}`));
+app.listen(PORT, () => console.log(`Server Started at PORT:${PORT}`));
