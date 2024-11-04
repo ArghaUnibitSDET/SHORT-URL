@@ -179,6 +179,7 @@
                             <th>Short ID</th>
                             <th>Redirect URL</th>
                             <th>Clicks</th>
+                            <th>URL</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -187,6 +188,7 @@
                                 <td><%= index + 1 %></td>
                                 <td><%= url.shortId %></td>
                                 <td><%= url.redirectURL %></td>
+                                <td><a href="http://localhost:8001/url/<%= url.shortId %>">Click To Visit</a></td>
                                 <td><%= url.visitHistory.length %></td>
                             </tr>
                         <% }); %>
