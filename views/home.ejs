@@ -179,7 +179,7 @@
         }
     </script>
     <div class="container">
-        <!-- Navigation buttons -->
+        
 
 
         <h1>Advanced URL Shortener</h1>
@@ -188,10 +188,10 @@
         <!-- Display generated URL if exists -->
         <% if (locals.id) { %>
             <p><strong>URL Generated:</strong>
-                <a href="http://localhost:8001/url/<%= id %>" target="_blank"
+                <a href="http://<%= HOST %>:<%= PORT %>/url/<%= id %>" target="_blank"
                     style="color: #FFEB3B; text-decoration: none;">
-                    http://localhost:8001/url/<%= id %>
-                </a>
+                    http://<%= HOST %>:<%= PORT %>/url/<%= id %>
+                 </a>
             </p>
 
             <% } %>
@@ -229,13 +229,13 @@
                                             <%= url.shortId %>
                                         </td>
                                         <td>
-                                            <a href="http://localhost:8001/url/<%= url.shortId %>" target="_blank"
+                                            <a href="http://<%= HOST %>:<%= PORT %>/url/<%= url.shortId %>" target="_blank"
                                                 style="color: #FFEB3B; text-decoration: none;">
-                                                http://localhost:8001/url/<%= url.shortId %>
+                                                http://<%= HOST %>:<%= PORT %>/url/<%= url.shortId %>
                                             </a>
                                         </td>
                                         <td class="icon">
-                                            <a href="http://localhost:8001/url/<%= url.shortId %>" target="_blank">
+                                            <a href="http://<%= HOST %>:<%= PORT %>/url/<%= url.shortId %>" target="_blank">
                                                 <img src="data:image/png;base64,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"
                                                     alt="Link Icon">
                                             </a>
