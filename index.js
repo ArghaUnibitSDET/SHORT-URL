@@ -1,3 +1,5 @@
+
+require ("dotenv").config();
 const express = require("express");
 const path = require("path");
 require("./connect");
@@ -5,7 +7,7 @@ const urlRoute = require("./routes/url");
 const statusRoute = require("./routes/staticRouter");
 const URL = require("./models/url");
 const app = express();
-const PORT = 8002;
+const PORT = process.env.PORT || 3000; 
 const HOST = '192.168.1.38';
 
 app.use(express.json());
