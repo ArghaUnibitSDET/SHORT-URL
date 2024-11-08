@@ -27,7 +27,7 @@
         /* Container styling */
         .container {
             width: 90%;
-            max-width: 800px;
+            max-width: 100%;
             background-color: rgba(255, 255, 255, 0.15);
             padding: 20px;
             border-radius: 12px;
@@ -109,12 +109,16 @@
 
         th,
         td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-            background-color: rgba(255, 255, 255, 0.15);
-            font-size: 14px;
-        }
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.15);
+    font-size: 14px;
+    max-width: 150px; 
+    word-wrap: break-word;
+    white-space: normal;
+}
+
 
         th {
             background-color: rgba(255, 122, 0, 0.8);
@@ -167,6 +171,29 @@
                 padding: 8px;
             }
         }
+         /* Popup styling */
+         .popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            z-index: 1000;
+            animation: fadeInOut 3s ease forwards;
+        }
+
+        /* Green popup for success */
+        .popup.success {
+            background-color: #4CAF50; /* Green */
+        }
+
+        /* Red popup for error */
+        .popup.error {
+            background-color: #f44336; /* Red */
+        }
     </style>
 </head>
 
@@ -177,6 +204,53 @@
             // Redirect to the home page
             window.location.href = "/";
         }
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector("form");
+            const urlInput = document.querySelector("input[name='url']");
+
+            form.addEventListener("submit", async (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                const url = urlInput.value;
+
+                try {
+                    const response = await fetch("/url/add", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ url })
+                    });
+
+                    const data = await response.json(); // Get response data once
+
+                    if (response.ok) { // If response status is 2xx
+                        // Check if message exists in data and show success message
+                        showPopup(data.message, 'success');
+                        window.location.reload(); // Refresh to show the new URL
+                    } else if (response.status === 400) { // If bad request (validation error)
+                        showPopup(data.error || 'Invalid URL format', 'error');
+                    } else {
+                        showPopup(data.error || "An unexpected error occurred. Please try again.", 'error');
+                    }
+
+                } catch (error) {
+                    showPopup("Failed to connect to the server.", 'error');
+                }
+            });
+
+            function showPopup(message, type) {
+                const popup = document.createElement("div");
+                popup.className = `popup ${type}`; // Add the type (success or error) to the class
+                popup.innerText = message;
+                document.body.appendChild(popup);
+
+                // Remove popup after 3 seconds
+                setTimeout(() => {
+                    popup.remove();
+                }, 3000);
+            }
+        });
     </script>
     <div class="container">
         
@@ -184,17 +258,6 @@
 
         <h1>Advanced URL Shortener</h1>
         <p>Generate a short link for any long URL!</p>
-
-        <!-- Display generated URL if exists -->
-        <% if (locals.id) { %>
-            <p><strong>URL Generated:</strong>
-                <a href="http://<%= HOST %>:<%= PORT %>/url/<%= id %>" target="_blank"
-                    style="color: #FFEB3B; text-decoration: none;">
-                    http://<%= HOST %>:<%= PORT %>/url/<%= id %>
-                 </a>
-            </p>
-
-            <% } %>
 
                 <!-- URL generation form -->
                 <form method="POST" action="/url/add">
