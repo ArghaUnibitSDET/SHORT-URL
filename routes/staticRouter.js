@@ -4,7 +4,9 @@ const URL = require("../models/url");
 
 
 router.get("/", async (req, res) => {
-    const allUrls = await URL.find({});
+    if(!req.user) return res.redirect("/login");
+    
+    const allUrls = await URL.find({createdBy:req.user._id});
     
     // Define HOST and PORT based on your environment
     const PORT = 8002;
@@ -14,7 +16,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/signup", (req, res) => {
-    return res.render("signup");
+   return res.render("signup");
 });
 router.get("/login", (req, res) => {
     return res.render("login");

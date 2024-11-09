@@ -26,6 +26,7 @@ async function handleGenerateNewShortURL(req, res) {
       shortId: shortID,
       redirectURL: body.url,
       visitHistory: [],
+      createdBy: req.user._id,
     });
 
     // Send successful response with status 200 and success message

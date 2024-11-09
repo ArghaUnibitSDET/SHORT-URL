@@ -2,9 +2,12 @@
 require ("dotenv").config();
 const express = require("express");
 const path = require("path");
+const cookieParser = require("cookie-parser");
+const{restrictToLoggedinUserOnly, checkAuth} = require('./middlewares/auth')
+
 require("./connect");
 const urlRoute = require("./routes/url");
-const statusRoute = require("./routes/staticRouter");
+const staticRoute = require("./routes/staticRouter");
 const userRoute = require("./routes/user");
 const URL = require("./models/url");
 const app = express();
@@ -13,10 +16,11 @@ const HOST = '192.168.1.38';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser);
 
-app.use("/url", urlRoute);
+app.use("/url", restrictToLoggedinUserOnly, urlRoute);
 app.use("/user", userRoute);
-app.use("/", statusRoute);
+app.use("/", checkAuth, staticRoute);
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
