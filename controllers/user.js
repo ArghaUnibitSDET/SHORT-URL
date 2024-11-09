@@ -5,7 +5,7 @@ async function handleUserSignup(req, res) {
     const user = new User({name, email, password});
     await user.save();
     return res.render("/");
-    //return res.status(201).json({ message: "User created successfully" });
+    //return res.status(201).json({ message: "User created successfully" });//sdfsdfdsfsddsf
 }
 async function handleUserLogin(req, res) {
     const { email, password } = req.body;
