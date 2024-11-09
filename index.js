@@ -5,6 +5,7 @@ const path = require("path");
 require("./connect");
 const urlRoute = require("./routes/url");
 const statusRoute = require("./routes/staticRouter");
+const userRoute = require("./routes/user");
 const URL = require("./models/url");
 const app = express();
 const PORT = process.env.PORT || 3000; 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/url", urlRoute);
+app.use("/user", userRoute);
 app.use("/", statusRoute);
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
